@@ -2,10 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
-import Input from '@/components/Input'
+import Form from '@/components/users/Form'
+import useSignIn from '@/hooks/useSignIn'
 import type { SignInInput } from '@/types/SignInInput'
 import { signInScheme } from '@/types/SignInInput'
 
@@ -14,7 +16,23 @@ const SignInPage = () => {
 
   const { handleSubmit, control, reset, setError } = useForm<SignInInput>({
     resolver: zodResolver(signInScheme),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
+
+  const handleSignIn = useSignIn()
+
+  const onSubmit: SubmitHandler<SignInInput> = useCallback(
+    async (data) => {
+      setIsLoading(true)
+      await handleSignIn(data, reset)
+      setIsLoading(false)
+    },
+    [handleSignIn, reset],
+  )
+
   return (
     <div className="w-full">
       <div className="flex md:flex-row md:items-start flex-col items-center justify-center w-[350px] p-3 my-14 md:w-[980px] md:p-[60px] md:my-[60px] mx-auto border-gray-300 border-2">
@@ -34,34 +52,13 @@ const SignInPage = () => {
           <br />
         </div>
         <div className="md:w-1/2 w-full mb-3 mt-5 md:mt-0">
-          <form>
-            <Input
-              id="email"
-              name="email"
-              label="Email"
-              type="email"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <Input
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <div className="flex justify-center md:justify-start">
-              <button
-                type="submit"
-                className="text-white mt-5 bg-sky-400 h-12 py-0 px-8 rounded-md border-0 text-center shadow-md hover:opacity-70"
-              >
-                Log in
-              </button>
-            </div>
-          </form>
+          <Form
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            control={control}
+            disabled={isLoading}
+            buttonText="Log in"
+          />
         </div>
       </div>
     </div>

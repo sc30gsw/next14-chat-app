@@ -2,10 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
-import Input from '@/components/Input'
+import Form from '@/components/users/Form'
+import useSignUp from '@/hooks/useSignUp'
 import { type SignUpInput, signUpScheme } from '@/types/SignUpInput'
 
 const SignUpPage = () => {
@@ -13,7 +15,25 @@ const SignUpPage = () => {
 
   const { handleSubmit, control, reset, setError } = useForm<SignUpInput>({
     resolver: zodResolver(signUpScheme),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+    },
   })
+
+  const handleSignUp = useSignUp()
+
+  const onSubmit: SubmitHandler<SignUpInput> = useCallback(
+    async (data) => {
+      setIsLoading(true)
+      await handleSignUp(data, setError, reset)
+      setIsLoading(false)
+    },
+    [handleSignUp, reset, setError],
+  )
+
   return (
     <div className="w-full">
       <div className="flex md:flex-row md:items-start flex-col items-center justify-center w-[350px] p-3 my-14 md:w-[980px] md:p-[60px] md:my-[60px] mx-auto border-gray-300 border-2">
@@ -33,52 +53,14 @@ const SignUpPage = () => {
           <br />
         </div>
         <div className="md:w-1/2 w-full mb-3 mt-5 md:mt-0">
-          <form>
-            <Input
-              id="name"
-              name="name"
-              label="Name"
-              type="name"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <Input
-              id="email"
-              name="email"
-              label="Email"
-              type="email"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <Input
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <Input
-              id="passwordConfirmation"
-              name="passwordConfirmation"
-              label="Password Confirmation"
-              type="passwordConfirmation"
-              control={control}
-              disabled={isLoading}
-              required
-            />
-            <div className="flex justify-center md:justify-start">
-              <button
-                type="submit"
-                className="text-white mt-5 bg-sky-400 h-12 py-0 px-8 rounded-md border-0 text-center shadow-md hover:opacity-70"
-              >
-                Create Account
-              </button>
-            </div>
-          </form>
+          <Form
+            isSignUp
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            control={control}
+            disabled={isLoading}
+            buttonText="Create Account"
+          />
         </div>
       </div>
     </div>
