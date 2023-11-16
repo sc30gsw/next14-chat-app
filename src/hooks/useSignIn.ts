@@ -30,7 +30,7 @@ const useSignIn = () => {
     [router],
   )
 
-  return handleSignIn
+  return { handleSignIn }
 }
 
 export default useSignIn

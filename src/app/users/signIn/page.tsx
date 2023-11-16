@@ -25,7 +25,7 @@ const SignInPage = () => {
     },
   })
 
-  const handleSignIn = useSignIn()
+  const { handleSignIn } = useSignIn()
 
   const onSubmit: SubmitHandler<SignInInput> = useCallback(
     async (data) => await handleSignIn(data, reset),

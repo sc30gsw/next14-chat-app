@@ -27,7 +27,7 @@ const SignUpPage = () => {
     },
   })
 
-  const handleSignUp = useSignUp()
+  const { handleSignUp } = useSignUp()
 
   const onSubmit: SubmitHandler<SignUpInput> = useCallback(
     async (data) => await handleSignUp(data, setError, reset),
