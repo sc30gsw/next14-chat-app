@@ -4,8 +4,21 @@ import Form from '@/components/messages/Form'
 import Header from '@/components/messages/Header'
 import MessageList from '@/components/messages/MessageList'
 import Sidebar from '@/components/sidebar/Sidebar'
+import prisma from '@/libs/prismadb'
 
-const MessagesPage = () => {
+export const generateStaticParams = async () => {
+  const rooms = await prisma.room.findMany({ include: { roomUsers: true } })
+
+  return rooms.map((room) => ({
+    roomId: room.id,
+  }))
+}
+
+type MessagePageProps = {
+  params: { roomId: string }
+}
+
+const MessagesPage: React.FC<MessagePageProps> = ({ params }) => {
   return (
     <main className="flex sm:flex-row flex-col">
       <Sidebar />
