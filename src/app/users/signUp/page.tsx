@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
@@ -11,9 +11,13 @@ import useSignUp from '@/hooks/useSignUp'
 import { type SignUpInput, signUpScheme } from '@/types/SignUpInput'
 
 const SignUpPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
-
-  const { handleSubmit, control, reset, setError } = useForm<SignUpInput>({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<SignUpInput>({
     resolver: zodResolver(signUpScheme),
     defaultValues: {
       name: '',
@@ -23,14 +27,10 @@ const SignUpPage = () => {
     },
   })
 
-  const handleSignUp = useSignUp()
+  const { handleSignUp } = useSignUp()
 
   const onSubmit: SubmitHandler<SignUpInput> = useCallback(
-    async (data) => {
-      setIsLoading(true)
-      await handleSignUp(data, setError, reset)
-      setIsLoading(false)
-    },
+    async (data) => await handleSignUp(data, setError, reset),
     [handleSignUp, reset, setError],
   )
 
@@ -58,7 +58,7 @@ const SignUpPage = () => {
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
             control={control}
-            disabled={isLoading}
+            disabled={isSubmitting}
             buttonText="Create Account"
           />
         </div>

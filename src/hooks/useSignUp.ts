@@ -44,7 +44,7 @@ const useSignUp = () => {
     [],
   )
 
-  return handleSignUp
+  return { handleSignUp }
 }
 
 export default useSignUp

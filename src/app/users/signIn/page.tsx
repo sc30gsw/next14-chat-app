@@ -12,9 +12,12 @@ import type { SignInInput } from '@/types/SignInInput'
 import { signInScheme } from '@/types/SignInInput'
 
 const SignInPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
-
-  const { handleSubmit, control, reset, setError } = useForm<SignInInput>({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<SignInInput>({
     resolver: zodResolver(signInScheme),
     defaultValues: {
       email: '',
@@ -22,14 +25,10 @@ const SignInPage = () => {
     },
   })
 
-  const handleSignIn = useSignIn()
+  const { handleSignIn } = useSignIn()
 
   const onSubmit: SubmitHandler<SignInInput> = useCallback(
-    async (data) => {
-      setIsLoading(true)
-      await handleSignIn(data, reset)
-      setIsLoading(false)
-    },
+    async (data) => await handleSignIn(data, reset),
     [handleSignIn, reset],
   )
 
@@ -56,7 +55,7 @@ const SignInPage = () => {
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
             control={control}
-            disabled={isLoading}
+            disabled={isSubmitting}
             buttonText="Log in"
           />
         </div>

@@ -1,5 +1,13 @@
+import React from 'react'
+
+import Sidebar from '@/components/sidebar/Sidebar'
+
 const Home = () => {
-  return <main></main>
+  return (
+    <main className="flex">
+      <Sidebar />
+    </main>
+  )
 }
 
 export default Home
