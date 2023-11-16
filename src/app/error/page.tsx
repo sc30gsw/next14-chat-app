@@ -7,7 +7,6 @@ import React from 'react'
 const ErrorPage = () => {
   const params = useSearchParams()
   const message = params.get('message')
-  console.log(message)
 
   const url = message === 'AuthenticationError' ? '/users/signIn' : '/'
   return (

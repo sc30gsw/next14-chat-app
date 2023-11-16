@@ -10,8 +10,6 @@ export const config = {
 const options = {
   callbacks: {
     authorized: ({ token }: { token: JWT | null }) => {
-      console.log(token)
-
       return token ? true : false
     },
   },

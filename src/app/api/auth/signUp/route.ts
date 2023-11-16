@@ -10,7 +10,6 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ message: 'Bad Request' }, { status: 405 })
 
     const { name, email, password, passwordConfirmation } = await req.json()
-    console.log(name, email, password, passwordConfirmation)
 
     const existingUser = await prisma.user.findUnique({ where: { email } })
     if (existingUser)
