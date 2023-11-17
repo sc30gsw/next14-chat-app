@@ -1,8 +1,13 @@
 import { z } from 'zod'
 
-export const messageScheme = z.object({
-  message: z.string().min(1, 'message is required'),
-  image: z.string().optional().nullable(),
-})
+export const messageScheme = z
+  .object({
+    content: z.string().optional().nullable(),
+    image: z.string().optional().nullable(),
+  })
+  .refine((data) => data.content || data.image, {
+    message: 'Either message or image is required',
+    path: ['content'], // エラーを表示するフィールドを指定
+  })
 
 export type MessageInput = z.infer<typeof messageScheme>
