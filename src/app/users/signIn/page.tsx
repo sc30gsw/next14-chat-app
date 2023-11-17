@@ -2,7 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import React, { useCallback, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useCallback, useEffect, useState } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
@@ -12,6 +13,16 @@ import type { SignInInput } from '@/types/SignInInput'
 import { signInScheme } from '@/types/SignInInput'
 
 const SignInPage = () => {
+  const searchParams = useSearchParams()
+  const message = searchParams.get('message')
+  const [signOutMessage, setSignOutMessage] = useState(<></>)
+  useEffect(() => {
+    if (message === 'updateemail')
+      setSignOutMessage(
+        <div className="text-red-500">Update email, Please retry login</div>,
+      )
+  }, [message])
+
   const {
     handleSubmit,
     control,
@@ -51,6 +62,7 @@ const SignInPage = () => {
           <br />
         </div>
         <div className="md:w-1/2 w-full mb-3 mt-5 md:mt-0">
+          {signOutMessage}
           <Form
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}

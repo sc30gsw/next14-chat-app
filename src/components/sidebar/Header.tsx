@@ -1,20 +1,20 @@
+'use client'
+
 import Link from 'next/link'
-import { getServerSession } from 'next-auth'
 import React from 'react'
 
-import authOptions from '@/libs/authOptions'
+import useCurrentUser from '@/hooks/useCurrentUser'
 
-const Header = async () => {
-  const session = await getServerSession(authOptions)
+const Header = () => {
+  const { data: currentUser } = useCurrentUser()
 
-  if (!session) return null
   return (
     <div className="h-24 py-0 px-5 bg-slate-900 flex justify-between items-center">
       <Link
-        href="/"
+        href={`/users/${currentUser?.id}`}
         className="text-base text-white no-underline transition duration-200 hover:opacity-70"
       >
-        {session.user?.name}
+        {currentUser?.name}
       </Link>
       <div className="text-[10px]">
         <Link
