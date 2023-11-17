@@ -12,6 +12,7 @@ import Input from '@/components/Input'
 
 type FormProps = {
   isSignUp?: boolean
+  isEdit?: boolean
   handleSubmit: UseFormHandleSubmit<any>
   onSubmit: SubmitHandler<any>
   control: Control<any>
@@ -21,6 +22,7 @@ type FormProps = {
 
 const Form: React.FC<FormProps> = ({
   isSignUp,
+  isEdit,
   handleSubmit,
   onSubmit,
   control,
@@ -29,7 +31,7 @@ const Form: React.FC<FormProps> = ({
 }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {isSignUp && (
+      {(isSignUp || isEdit) && (
         <div className="w-full relative my-3 px-0 tracking-wide font-extralight">
           <Input
             id="name"
@@ -53,17 +55,19 @@ const Form: React.FC<FormProps> = ({
           required
         />
       </div>
-      <div className="w-full relative my-3 px-0 tracking-wide font-extralight">
-        <Input
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          control={control}
-          disabled={disabled}
-          required
-        />
-      </div>
+      {isEdit || (
+        <div className="w-full relative my-3 px-0 tracking-wide font-extralight">
+          <Input
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            control={control}
+            disabled={disabled}
+            required
+          />
+        </div>
+      )}
       {isSignUp && (
         <div className="w-full relative my-3 px-0 tracking-wide font-extralight">
           <Input
