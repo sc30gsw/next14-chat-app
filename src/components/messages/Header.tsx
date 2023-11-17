@@ -5,7 +5,6 @@ import React from 'react'
 import toast from 'react-hot-toast'
 
 import useCurrentUser from '@/hooks/useCurrentUser'
-import useFetchRooms from '@/hooks/useFetchRooms'
 import useRooms from '@/hooks/useRooms'
 import type { Room } from '@/types/Room'
 

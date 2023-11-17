@@ -13,8 +13,10 @@ type MessageItemProps = {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
-  const { isCurrentUserMessage, liked, isLiked, likeCount, handleLike } =
-    useHandleLike(message.id, message.userId)
+  const { isCurrentUserMessage, liked, likeCount, handleLike } = useHandleLike(
+    message.id,
+    message.userId,
+  )
 
   return (
     <div className="mt-[10px] mx-0 mb-0">
