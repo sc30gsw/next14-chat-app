@@ -3,7 +3,7 @@ import type { Room } from '@/types/Room'
 const useFetchRooms = async (userId: string) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE_URL}/api/rooms?userId=${userId}`,
+      `${process.env.API_BASE_URL}/api/rooms/user?userId=${userId}`,
       {
         next: { revalidate: 1 },
       },
