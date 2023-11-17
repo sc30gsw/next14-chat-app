@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import useSWR from 'swr'
 
 import fetcher from '@/libs/fetcher'
@@ -9,10 +10,13 @@ const useMessages = (roomId: string) => {
     fetcher,
   )
 
-  const addMessage = (message: Message) =>
-    mutate((messages) => [...(messages || []), message], false)
+  const addMessage = useCallback(
+    (message: Message) =>
+      mutate((messages) => [...(messages || []), message], false),
+    [mutate],
+  )
 
-  return { data, addMessage, error, isLoading }
+  return { data, addMessage, error, isLoading, mutate }
 }
 
 export default useMessages
