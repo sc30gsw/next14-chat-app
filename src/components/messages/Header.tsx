@@ -25,6 +25,7 @@ const Header: React.FC<HeaderProps> = ({ room }) => {
       mutateRooms()
       toast.success('Successful delete room')
       router.push('/')
+      router.refresh()
     } catch (err) {
       console.log(err)
       toast.error('Failed delete room')
