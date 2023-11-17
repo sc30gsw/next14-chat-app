@@ -1,8 +1,7 @@
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 import type { UseFormReset } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { v4 as uuidv4 } from 'uuid'
 
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useMessages from '@/hooks/useMessages'
@@ -19,14 +18,14 @@ const useCreateMessage = (roomId: string) => {
       reset: UseFormReset<MessageInput>,
       setBase64: (prev: string) => void,
     ) => {
-      if (!currentUser) return redirect('/users/signIn')
+      if (!currentUser) return
 
       const newMockMessage = {
-        id: uuidv4(),
+        id: '3b40b0b9-eaa2-44ba-b361-92ca653fb667',
         userId: currentUser.id,
         roomId,
-        content: data.content || undefined,
-        image: data.image || undefined,
+        content: data.content,
+        image: data.image,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         user: currentUser,

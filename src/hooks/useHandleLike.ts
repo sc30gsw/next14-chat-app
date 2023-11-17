@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useIsLiked from '@/hooks/useIsLiked'
 import useLikeCount from '@/hooks/useLikeCount'
+import useMessages from '@/hooks/useMessages'
 
 const useHandleLike = (messageId: string, userId: string) => {
   const { data: currentUser } = useCurrentUser()
@@ -16,19 +17,21 @@ const useHandleLike = (messageId: string, userId: string) => {
   )
 
   const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(likeCountData as number)
+  const [likeCount, setLikeCount] = useState(0)
 
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading) setLikeCount(likeCountData as number)
+    if (!isLoading) setLikeCount(likeCountData || 0)
     if (!isLikedLoading) setLiked(isLiked as boolean)
-  }, [isLiked, isLikedLoading, isLoading, likeCountData])
+  }, [isLiked, isLikedLoading, isLoading, likeCountData, messageId])
 
   const handleLike = useCallback(async () => {
     // UI更新
-    setLiked(!liked)
-    setLikeCount(liked ? likeCount - 1 : likeCount + 1)
+    const newLiked = !liked
+    const newLikeCount = liked ? likeCount - 1 : likeCount + 1
+    setLiked(newLiked)
+    setLikeCount(newLikeCount)
 
     try {
       if (!liked) {
