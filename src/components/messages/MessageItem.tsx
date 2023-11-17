@@ -3,8 +3,9 @@
 import { format } from 'date-fns'
 import Image from 'next/image'
 import React from 'react'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 
-import useCurrentUser from '@/hooks/useCurrentUser'
+import useHandleLike from '@/hooks/useHandleLike'
 import type { Message } from '@/types/Message'
 
 type MessageItemProps = {
@@ -12,8 +13,8 @@ type MessageItemProps = {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
-  const { data: currentUser } = useCurrentUser()
-  const isCurrentUserMessage = currentUser?.id === message.userId
+  const { isCurrentUserMessage, liked, isLiked, likeCount, handleLike } =
+    useHandleLike(message.id, message.userId)
 
   return (
     <div className="mt-[10px] mx-0 mb-0">
@@ -29,8 +30,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
         <div className="mt-[10px]">
           <div
             className={`text-black text-xs sm:text-sm ${
-              message.image || 'mb-10'
-            } ${isCurrentUserMessage && 'text-right'}`}
+              isCurrentUserMessage && 'text-right'
+            }`}
           >
             {message.content}
           </div>
@@ -38,9 +39,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
       )}
       {message.image && (
         <div
-          className={`mt-[10px] ${
-            isCurrentUserMessage && 'flex justify-end'
-          } mb-10`}
+          className={`mt-[10px] ${isCurrentUserMessage && 'flex justify-end'}`}
         >
           <Image
             width={100}
@@ -51,6 +50,26 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
           />
         </div>
       )}
+      <div
+        className={`flex justify-end my-3  ${
+          isCurrentUserMessage ? 'w-full' : 'w-1/2'
+        }`}
+      >
+        {liked ? (
+          <AiFillHeart
+            size={24}
+            className="text-red-500 cursor-pointer"
+            onClick={handleLike}
+          />
+        ) : (
+          <AiOutlineHeart
+            size={24}
+            className="text-red-500 cursor-pointer"
+            onClick={handleLike}
+          />
+        )}
+        <span className="text-red-500">{likeCount}</span>
+      </div>
     </div>
   )
 }

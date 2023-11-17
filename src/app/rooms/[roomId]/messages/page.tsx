@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import Form from '@/components/messages/Form'
 import Header from '@/components/messages/Header'
 import MessageList from '@/components/messages/MessageList'
 import Sidebar from '@/components/sidebar/Sidebar'
+import Spinner from '@/components/Spinner'
 import useFetchRoom from '@/hooks/useFetchRoom'
 import prisma from '@/libs/prismadb'
 
@@ -28,9 +29,11 @@ const MessagesPage: React.FC<MessagePageProps> = async ({ params }) => {
     <main className="flex sm:flex-row flex-col">
       <Sidebar />
       <div className="bg-white w-full md:w-[calc(100%-300px)] sm:w-[calc(100%-230px)]">
-        <Header room={room} />
-        <MessageList roomId={params.roomId} />
-        <Form roomId={params.roomId} />
+        <Suspense fallback={<Spinner />}>
+          <Header room={room} />
+          <MessageList roomId={params.roomId} />
+          <Form roomId={params.roomId} />
+        </Suspense>
       </div>
     </main>
   )
