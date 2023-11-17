@@ -27,7 +27,7 @@ const useCreateRoom = () => {
           return
         }
 
-        const response = await fetch('/api/rooms/new', {
+        const response = await fetch('/api/rooms', {
           method: 'POST',
           headers: { ContentType: 'application/json' },
           body: JSON.stringify({
