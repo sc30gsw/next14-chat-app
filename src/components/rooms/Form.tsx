@@ -99,7 +99,7 @@ const Form: React.FC<FormProps> = ({ users }) => {
         </div>
         <div className="mt-5">
           <div className="md:float-right md:block flex justify-center md:w-[70%] w-full">
-            <Button type="submit" label="Create Room" isRoom />
+            <Button type="submit" label="Create Room" />
           </div>
         </div>
       </div>

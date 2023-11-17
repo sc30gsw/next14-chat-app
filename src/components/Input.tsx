@@ -12,6 +12,7 @@ type InputProps = {
   disabled?: boolean
   required?: boolean
   isChat?: boolean
+  isRoom?: boolean
 }
 
 type ExtendInputProps<T extends FieldValues> = UseControllerProps<T> &
@@ -25,6 +26,7 @@ const Input = <T extends FieldValues>({
   disabled,
   required,
   isChat,
+  isRoom,
   rules,
 }: ExtendInputProps<T>) => {
   const { field, fieldState } = useController<T>({ name, control, rules })
@@ -55,7 +57,11 @@ const Input = <T extends FieldValues>({
       >
         {label}
       </label>
-      {error && <span className="text-red-500">{error.message}</span>}
+      {error && (
+        <span className={`text-red-500 ${isRoom && 'absolute bottom-12'}`}>
+          {error.message}
+        </span>
+      )}
     </>
   )
 }
