@@ -5,7 +5,7 @@ import type { Room } from '@/types/Room'
 
 const useRooms = (userId: string) => {
   const { data, error, isLoading, mutate } = useSWR<Room[]>(
-    `/api/rooms/${userId}`,
+    `/api/rooms/user?userId=${userId}`,
     fetcher,
   )
 
