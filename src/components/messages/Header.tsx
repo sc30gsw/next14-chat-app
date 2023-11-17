@@ -4,18 +4,19 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import toast from 'react-hot-toast'
 
-import useCurrentUser from '@/hooks/useCurrentUser'
 import useRooms from '@/hooks/useRooms'
 import type { Room } from '@/types/Room'
 
 type HeaderProps = {
   room?: Room
+  userId: string
 }
 
-const Header: React.FC<HeaderProps> = ({ room }) => {
+const Header: React.FC<HeaderProps> = ({ room, userId }) => {
   const router = useRouter()
-  const { data: currentUser } = useCurrentUser()
-  const { mutate: mutateRooms } = useRooms(currentUser?.id as string)
+
+  const { mutate: mutateRooms } = useRooms(userId)
+
   const handleClick = async () => {
     try {
       await fetch(`/api/rooms/${room?.id}`, {

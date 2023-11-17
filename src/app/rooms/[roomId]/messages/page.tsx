@@ -1,3 +1,4 @@
+import { getServerSession } from 'next-auth'
 import React, { Suspense } from 'react'
 
 import Form from '@/components/messages/Form'
@@ -6,6 +7,7 @@ import MessageList from '@/components/messages/MessageList'
 import Sidebar from '@/components/sidebar/Sidebar'
 import Spinner from '@/components/Spinner'
 import useFetchRoom from '@/hooks/useFetchRoom'
+import authOptions from '@/libs/authOptions'
 import prisma from '@/libs/prismadb'
 
 export const generateStaticParams = async () => {
@@ -24,13 +26,16 @@ type MessagePageProps = {
 
 const MessagesPage: React.FC<MessagePageProps> = async ({ params }) => {
   const room = await useFetchRoom(params.roomId)
+  const session = await getServerSession(authOptions)
+
+  if (!session) return null
 
   return (
     <main className="flex sm:flex-row flex-col">
       <Sidebar />
       <div className="bg-white w-full md:w-[calc(100%-300px)] sm:w-[calc(100%-230px)]">
         <Suspense fallback={<Spinner />}>
-          <Header room={room} />
+          <Header room={room} userId={session.user?.id as string} />
           <MessageList roomId={params.roomId} />
           <Form roomId={params.roomId} />
         </Suspense>
