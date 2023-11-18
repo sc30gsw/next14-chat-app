@@ -47,12 +47,12 @@ const useCreateMessage = (roomId: string) => {
             image: data.image,
           }),
         })
-
-        reset()
-        router.refresh()
       } catch (err) {
         toast.error('Failed create message')
         console.log(err)
+      } finally {
+        reset()
+        router.refresh()
       }
     },
     [addMessage, currentUser, roomId, router],
