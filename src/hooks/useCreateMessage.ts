@@ -34,6 +34,8 @@ const useCreateMessage = (roomId: string) => {
       // オプティミスティックUI更新
       addMessage(newMockMessage)
 
+      setBase64('')
+
       try {
         await fetch('/api/messages', {
           method: 'POST',
@@ -47,7 +49,6 @@ const useCreateMessage = (roomId: string) => {
         })
 
         reset()
-        setBase64('')
         router.refresh()
       } catch (err) {
         toast.error('Failed create message')
