@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useIsLiked from '@/hooks/useIsLiked'
 import useLikeCount from '@/hooks/useLikeCount'
-import useMessages from '@/hooks/useMessages'
 
 const useHandleLike = (messageId: string, userId: string) => {
   const { data: currentUser } = useCurrentUser()
