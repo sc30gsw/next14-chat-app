@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import useRooms from '@/hooks/useRooms'
@@ -16,6 +16,20 @@ const Header: React.FC<HeaderProps> = ({ room, userId }) => {
   const router = useRouter()
 
   const { mutate: mutateRooms } = useRooms(userId)
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      const response = await fetch(`/api/rooms/${room?.id}`)
+      if (!response.ok) {
+        toast.error('The room has been deleted')
+        router.push('/')
+        router.refresh()
+      }
+    }, 5000) // 5秒ごとにチェック
+
+    // コンポーネントがアンマウントされたときにインターバルをクリア
+    return () => clearInterval(intervalId)
+  }, [room, router])
 
   const handleClick = async () => {
     try {
