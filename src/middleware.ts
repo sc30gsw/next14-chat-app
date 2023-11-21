@@ -7,7 +7,7 @@ export const config = {
 }
 
 // トークンが存在しない場合、リダイレクトする
-const options = {
+export const options = {
   callbacks: {
     authorized: ({ token }: { token: JWT | null }) => {
       return token ? true : false
